@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environments';
 
 @Injectable({ providedIn: 'root' })
 export class AttendanceService {
-  private baseUrl = 'http://10.161.203.97:5195/api/Attendance';
+  private myAppUrl = environment.apiUrl;
+  private baseUrl = `${this.myAppUrl}/Attendance`;
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

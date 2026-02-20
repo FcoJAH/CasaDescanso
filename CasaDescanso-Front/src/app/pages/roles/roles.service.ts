@@ -1,13 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of, throwError } from 'rxjs';
-
+import { environment } from '../../../environments/environments';
 @Injectable({
   providedIn: 'root'
 })
 export class RolesService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://10.161.203.97:5195/api/Roles'; // Ajusta según tu IP
+  private myAppUrl = environment.apiUrl; // Usamos la URL del entorno
+  private apiUrl = `${this.myAppUrl}/Roles`; // Ajusta según tu IP
 
   getRoles(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/all`);

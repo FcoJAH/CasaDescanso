@@ -2,6 +2,7 @@ import { inject, Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environments';
 
 export interface User {
   userId: number;
@@ -13,7 +14,8 @@ export interface User {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://10.161.203.97:5195/api/Auth/login';
+  private myAppUrl = environment.apiUrl; // Usamos la URL del entorno
+  private apiUrl = `${this.myAppUrl}/Auth/login`;
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   public currentUserSignal = signal<User | null>(null);

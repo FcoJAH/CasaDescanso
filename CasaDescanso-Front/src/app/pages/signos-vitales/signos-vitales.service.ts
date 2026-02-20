@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environments';
 
 export interface VitalSigns {
     id?: number;
@@ -18,7 +19,8 @@ export interface VitalSigns {
 })
 export class VitalSignsService {
     private http = inject(HttpClient);
-    private apiUrl = 'http://10.161.203.97:5195/api';
+    private myAppUrl = environment.apiUrl;
+    private apiUrl = `${this.myAppUrl}`;
 
     registrarSignosVitales(signos: VitalSigns) {
         return this.http.post(`${this.apiUrl}/VitalSigns`, signos);

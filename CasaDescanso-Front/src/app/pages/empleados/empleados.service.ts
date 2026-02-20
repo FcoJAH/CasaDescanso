@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core'; // Usamos inject
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environments'; // Importamos el environment
 
 export interface Empleado {
   firstName: string;
@@ -40,7 +41,8 @@ export interface Role {
 export class EmpleadosService {
   // Inyectamos el HttpClient de forma moderna
   private http = inject(HttpClient);
-  private baseUrl = 'http://10.161.203.97:5195/api';
+  private myAppUrl = environment.apiUrl; // Usamos la URL del environment
+  private baseUrl = `${this.myAppUrl}`;
 
   registrarEmpleado(empleado: Empleado): Observable<any> {
     return this.http.post(`${this.baseUrl}/Workers/create`, empleado);

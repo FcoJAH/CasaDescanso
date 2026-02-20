@@ -1,0 +1,21 @@
+# --- GENERAL ---
+.vscode/
+.idea/
+*.log
+Thumbs.db
+.DS_Store
+
+# --- FRONTEND (Angular) ---
+CasaDescanso-Front/.angular/
+CasaDescanso-Front/node_modules/
+CasaDescanso-Front/dist/
+CasaDescanso-Front/tmp/
+# No ignoramos package-lock.json para mantener consistencia de versiones
+
+# --- BACKEND (.NET) ---
+**/[Bb]in/
+**/[Oo]bj/
+**/.vs/
+CasaDescanso-Back/**/*.user
+CasaDescanso-Back/**/*.suo
+CasaDescanso-Back/CasaDescanso.Api/appsettings.Development.json

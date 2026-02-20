@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core'; // Usamos inject
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environments';
 
 export interface Residente {
   // Información Identitaria
@@ -38,7 +39,8 @@ export interface Residente {
 export class ResidentesService {
   // Inyectamos el HttpClient de forma moderna
   private http = inject(HttpClient);
-  private baseUrl = 'http://10.161.203.97:5195/api';
+  private myAppUrl = environment.apiUrl; // Usamos la URL del entorno
+  private baseUrl = `${this.myAppUrl}`;
 
   registrarResidente(residente: Residente): Observable<any> {
     return this.http.post(`${this.baseUrl}/Residents/create`, residente);
