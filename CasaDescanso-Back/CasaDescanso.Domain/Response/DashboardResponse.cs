@@ -10,8 +10,8 @@ public class DashboardResponse
     public int ActiveWorkers { get; set; }
     public int InactiveWorkers { get; set; }
 
-    public int OpenIncidents { get; set; }
-    public int ResolvedIncidents { get; set; }
+    public int TotalIncidents { get; set; }
+    public int TodayIncidents { get; set; }
 
     public int WorkersWorkingNow { get; set; }
     public int CheckInsToday { get; set; }

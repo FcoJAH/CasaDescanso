@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {}
+    "C:\\Users\\franc\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\repo\\CasaDescanso-Back\\CasaDescanso.Domain\\CasaDescanso.Domain.csproj",
+      "projectUniqueName": "D:\\repoGit\\hogaresfraternalesjuanacatlan\\CasaDescanso-Back\\CasaDescanso.Domain\\CasaDescanso.Domain.csproj",
       "projectName": "CasaDescanso.Domain",
-      "projectPath": "C:\\repo\\CasaDescanso-Back\\CasaDescanso.Domain\\CasaDescanso.Domain.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\repo\\CasaDescanso-Back\\CasaDescanso.Domain\\obj\\",
+      "projectPath": "D:\\repoGit\\hogaresfraternalesjuanacatlan\\CasaDescanso-Back\\CasaDescanso.Domain\\CasaDescanso.Domain.csproj",
+      "packagesPath": "C:\\Users\\franc\\.nuget\\packages\\",
+      "outputPath": "D:\\repoGit\\hogaresfraternalesjuanacatlan\\CasaDescanso-Back\\CasaDescanso.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\franc\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -64,7 +64,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.418/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.417/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

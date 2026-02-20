@@ -67,22 +67,4 @@ public class IncidentsController : ControllerBase
         return Ok(incidents);
     }
 
-    [HttpPatch("{id}/resolve")]
-    public async Task<IActionResult> Resolve(int id)
-    {
-        var resolved = await _incidentService.ResolveAsync(id);
-
-        if (!resolved)
-            return BadRequest(new { message = "Incidencia no encontrada o ya resuelta" });
-
-        return Ok(new { message = "Incidencia marcada como resuelta correctamente" });
-    }
-
-    [HttpGet("open")]
-    public async Task<IActionResult> GetOpen()
-    {
-        var incidents = await _incidentService.GetOpenAsync();
-        return Ok(incidents);
-    }
-
 }

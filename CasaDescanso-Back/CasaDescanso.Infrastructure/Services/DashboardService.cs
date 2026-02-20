@@ -14,6 +14,8 @@ public class DashboardService : IDashboardService
     public async Task<DashboardResponse> GetDashboardAsync()
     {
         var today = DateTime.UtcNow.Date;
+        var hoy = DateTime.UtcNow.Date;
+        var tomorrow = today.AddDays(1);
 
         return new DashboardResponse
         {
@@ -28,8 +30,10 @@ public class DashboardService : IDashboardService
             InactiveWorkers = await _context.Workers.CountAsync(w => !w.IsActive),
 
             // Incidents
-            OpenIncidents = await _context.Incidents.CountAsync(i => !i.Resolved),
-            ResolvedIncidents = await _context.Incidents.CountAsync(i => i.Resolved),
+            TotalIncidents = await _context.Incidents.CountAsync(),
+
+
+            TodayIncidents = await _context.Incidents.Where(i => i.Date >= hoy && i.Date < tomorrow).CountAsync(),
 
             // Attendance
             WorkersWorkingNow = await _context.Attendances

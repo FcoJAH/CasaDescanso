@@ -10,6 +10,7 @@ CasaDescanso-Front/.angular/
 CasaDescanso-Front/node_modules/
 CasaDescanso-Front/dist/
 CasaDescanso-Front/tmp/
+node_modules/
 # No ignoramos package-lock.json para mantener consistencia de versiones
 
 # --- BACKEND (.NET) ---

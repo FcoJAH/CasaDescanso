@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   stats = signal<DashboardData>({
     totalResidents: 0, activeResidents: 0, inactiveResidents: 0,
     totalWorkers: 0, activeWorkers: 0, inactiveWorkers: 0,
-    openIncidents: 0, resolvedIncidents: 0,
+    todayIncidents: 0, totalIncidents: 0,
     workersWorkingNow: 0, checkInsToday: 0
   });
 
@@ -83,9 +83,9 @@ export class DashboardComponent implements OnInit {
     new Chart(this.incidentChart.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: ['Abiertos', 'Resueltos'],
+        labels: ['Hoy', 'Totales'],
         datasets: [{
-          data: [data.openIncidents, data.resolvedIncidents],
+          data: [data.todayIncidents, data.totalIncidents],
           backgroundColor: ['#E74C3C', '#27AE60'], // Rojo para abiertos, Verde para resueltos
           hoverOffset: 4
         }]

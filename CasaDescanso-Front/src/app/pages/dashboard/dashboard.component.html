@@ -20,8 +20,8 @@
     <div class="metric-card incidents" [class.danger]="stats().openIncidents > 0">
       <span class="icon">⚠️</span>
       <div class="info">
-        <h3>{{ stats().openIncidents }}</h3>
-        <p>INCIDENCIAS ABIERTAS</p>
+        <h3>{{ stats().todayIncidents }}</h3>
+        <p>INCIDENCIAS DE HOY</p>
       </div>
     </div>
   </div>
@@ -56,8 +56,8 @@
         <canvas #incidentChart></canvas>
       </div>
       <div class="chart-footer">
-        <span class="text-danger">● Abiertos: {{ stats().openIncidents }}</span>
-        <span class="text-success">● Resueltos: {{ stats().resolvedIncidents }}</span>
+        <span class="text-danger">● Totales: {{ stats().totalIncidents }}</span>
+        <span class="text-success">● Hoy: {{ stats().todayIncidents }}</span>
       </div>
     </div>
 

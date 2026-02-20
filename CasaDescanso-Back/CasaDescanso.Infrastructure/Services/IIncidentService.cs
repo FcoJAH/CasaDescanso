@@ -8,7 +8,5 @@ public interface IIncidentService
     Task<bool> UpdateAsync(int id, UpdateIncidentRequest request);
     Task<List<IncidentDetailResponse>> GetByResidentIdAsync(int residentId);
     Task<List<IncidentDetailResponse>> GetAllAsync();
-    Task<bool> ResolveAsync(int id);
-    Task<List<IncidentDetailResponse>> GetOpenAsync(); 
 }
 

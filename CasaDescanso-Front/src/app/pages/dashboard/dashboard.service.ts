@@ -11,8 +11,8 @@ export interface DashboardData {
   totalWorkers: number;
   activeWorkers: number;
   inactiveWorkers: number;
-  openIncidents: number;
-  resolvedIncidents: number;
+  todayIncidents: number;
+  totalIncidents: number;
   workersWorkingNow: number;
   checkInsToday: number;
 }

@@ -37,7 +37,6 @@ public class IncidentService : IIncidentService
             Type = request.Type,
             SeverityLevel = request.SeverityLevel,
             Description = request.Description,
-            Resolved = false,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -64,8 +63,6 @@ public class IncidentService : IIncidentService
                 Type = i.Type,
                 SeverityLevel = i.SeverityLevel,
                 Description = i.Description,
-                Resolved = i.Resolved,
-                ResolvedAt = i.ResolvedAt,
                 CreatedAt = i.CreatedAt
             })
             .FirstOrDefaultAsync();
@@ -82,14 +79,6 @@ public class IncidentService : IIncidentService
         incident.Type = request.Type;
         incident.SeverityLevel = request.SeverityLevel;
         incident.Description = request.Description;
-
-        // Si cambia a resuelto, registrar fecha
-        if (!incident.Resolved && request.Resolved)
-        {
-            incident.ResolvedAt = DateTime.UtcNow;
-        }
-
-        incident.Resolved = request.Resolved;
 
         await _context.SaveChangesAsync();
         return true;
@@ -113,8 +102,7 @@ public class IncidentService : IIncidentService
                 Type = i.Type,
                 SeverityLevel = i.SeverityLevel,
                 Description = i.Description,
-                Resolved = i.Resolved,
-                ResolvedAt = i.ResolvedAt,
+
                 CreatedAt = i.CreatedAt
             })
             .ToListAsync();
@@ -137,52 +125,8 @@ public class IncidentService : IIncidentService
                 Type = i.Type,
                 SeverityLevel = i.SeverityLevel,
                 Description = i.Description,
-                Resolved = i.Resolved,
-                ResolvedAt = i.ResolvedAt,
                 CreatedAt = i.CreatedAt
             })
             .ToListAsync();
     }
-    public async Task<bool> ResolveAsync(int id)
-    {
-        var incident = await _context.Incidents.FindAsync(id);
-
-        if (incident == null)
-            return false;
-
-        if (incident.Resolved)
-            return false;
-
-        incident.Resolved = true;
-        incident.ResolvedAt = DateTime.UtcNow;
-
-        await _context.SaveChangesAsync();
-        return true;
-    }
-
-    public async Task<List<IncidentDetailResponse>> GetOpenAsync()
-    {
-        return await _context.Incidents
-            .Include(i => i.Resident)
-            .Include(i => i.RegisteredByUser)
-            .Where(i => !i.Resolved)
-            .OrderByDescending(i => i.Date)
-            .Select(i => new IncidentDetailResponse
-            {
-                Id = i.Id,
-                ResidentId = i.ResidentId,
-                ResidentFullName = i.Resident.FirstName + " " + i.Resident.LastName,
-                RegisteredByUserId = i.RegisteredByUserId,
-                RegisteredByUsername = i.RegisteredByUser.Username,
-                Date = i.Date,
-                Type = i.Type,
-                SeverityLevel = i.SeverityLevel,
-                Description = i.Description,
-                Resolved = i.Resolved,
-                ResolvedAt = i.ResolvedAt,
-                CreatedAt = i.CreatedAt
-            })
-            .ToListAsync();
-    }
-
 }
