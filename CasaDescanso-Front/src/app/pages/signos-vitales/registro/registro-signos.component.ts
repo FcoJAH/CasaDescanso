@@ -150,11 +150,9 @@ export class RegistroSignosComponent implements OnInit {
   onSubmit() {
     const payload = { ...this.signosForm.value };
     payload.residentId = parseInt(payload.residentId, 10);
-    console.log("📤 Payload enviado al servidor:", payload);
 
     this.empleadosService.registrarSignosVitales(payload).subscribe({
       next: () => {
-        console.log("✅ Registro de signos vitales guardado exitosamente en el servidor.");
         this.isRegistered.set(true);
         this.successData.set({
           titulo: '¡REGISTRO GUARDADO CON EXITO!',
@@ -163,7 +161,6 @@ export class RegistroSignosComponent implements OnInit {
         });
       },
       error: (err) => {
-        console.error("❌ Error al guardar el registro en el servidor:", err);
         this.successData.set({
           titulo: 'ERROR AL GUARDAR EN EL SERVIDOR',
           mensaje: 'Los datos clinicos no se han guardado correctamente debido a un error en el servidor. Por favor, intente nuevamente.',

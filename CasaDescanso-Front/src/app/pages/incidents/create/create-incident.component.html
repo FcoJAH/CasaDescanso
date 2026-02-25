@@ -1,28 +1,29 @@
-<div class="form-container" style="max-width: 650px; margin: 0 auto;">
-  @if (!isError()) {
-  <div class="form-card">
+<div class="form-container">
+  
+  @if (!isSuccess()) {
+  <div class="form-card animate-fade-in">
     <h3><span class="icon">📄</span> GENERAR INCIDENCIA NUEVA</h3>
     <p class="subtitle">Seleccione el residente con el cual se suscitó la incidencia.</p>
 
     <div class="form-group full-width">
       <label>RESIDENTE *</label>
-      <select class="custom-select"  (change)="onSeleccionar($event)">
-        <option [value]="0" disabled selected>-- BUSCAR RESIDENTE POR NOMBRE --</option>
+      <select class="custom-select" style="text-align: center;" (change)="onSeleccionar($event)">
+        <option [value]="0" disabled selected>-- BUSCAR RESIDENTE --</option>
         @for (u of residentes(); track u.id) {
         <option [value]="u.id">
-          {{ (u.firstName + ' ' + u.lastName + ' ' + (u.middleName || '')) }}
+          {{ (u.firstName + ' ' + u.lastName + ' ' + (u.middleName || '')) | uppercase }}
         </option>
         }
       </select>
     </div>
 
     @if (residenteSeleccionado()) {
-    <div class="incident-details">
+    <div class="incident-details animate-fade-in">
       <div class="grid-layout">
         <div class="form-group">
           <label>TIPO DE INCIDENCIA *</label>
           <select class="custom-select" [ngModel]="tipoIncidente()" (ngModelChange)="tipoIncidente.set($event)">
-            <option value="" disabled selected>-- SELECCIONAR TIPO --</option>
+            <option value="" disabled selected>-- SELECCIONAR --</option>
             <option value="Caída">CAÍDA</option>
             <option value="Médico">EMERGENCIA MÉDICA</option>
             <option value="Conducta">CONDUCTA / COMPORTAMIENTO</option>
@@ -33,7 +34,7 @@
         <div class="form-group">
           <label>NIVEL DE SEVERIDAD *</label>
           <select class="custom-select" [ngModel]="severidad()" (ngModelChange)="severidad.set($event)">
-            <option value="" disabled selected>-- SELECCIONAR NIVEL --</option>
+            <option value="" disabled selected>-- SELECCIONAR --</option>
             <option value="Bajo">BAJO</option>
             <option value="Medio">MEDIO</option>
             <option value="Crítico">CRÍTICO</option>
@@ -45,17 +46,13 @@
         <label>DESCRIPCIÓN DETALLADA DEL SUCESO *</label>
         <textarea class="custom-textarea" [ngModel]="descripcion()" (ngModelChange)="descripcion.set($event)" rows="4"
           placeholder="DESCRIBA LOS HECHOS, LUGAR Y CIRCUNSTANCIAS...">
-          </textarea>
+        </textarea>
       </div>
 
       <div class="actions">
-        <button class="btn-cancel" (click)="resetVista()">CANCELAR</button>
         <button class="btn-submit" [disabled]="loading()" (click)="onSubmit()">
           {{ loading() ? 'PROCESANDO...' : 'GUARDAR INCIDENCIA' }}
         </button>
-        <button class="btn-submit" (click)="resetVista()">NUEVA INCIDENCIA</button>
-
-        <button class="btn-back" (click)="resetVista()">INTENTAR DE NUEVO</button>
       </div>
     </div>
     }
@@ -63,26 +60,18 @@
   }
 
   @else {
-  <div class="success-card" style="border-top: 6px solid #F9A825;">
-    <div class="success-content">
-      <div class="success-icon" style="color: #F9A825;">⚠️</div>
-      <h2>AVISO DEL SISTEMA</h2>
-      <div class="info-box">
-        <p>{{ errorMessage() | uppercase }}</p>
-      </div>
-      <button class="btn-back" (click)="resetVista()">INTENTAR DE NUEVO</button>
-    </div>
-  </div>
+    <app-success-view 
+      [config]="successData()!" 
+      (onAction)="resetVista()" 
+      (onExit)="volver()">
+    </app-success-view>
   }
 
-  @if (isSuccess()) {
-  <div class="success-card" style="border-top: 6px solid #005BB5; margin-top: 20px;">
-    <div class="success-content">
-      <div class="success-icon" style="color: #005BB5;">✅</div>
-      <h2>¡ÉXITO!</h2>
-      <p>LA INCIDENCIA HA SIDO REGISTRADA CORRECTAMENTE.</p>
-      <button class="btn-submit" (click)="isSuccess.set(false); resetVista();">NUEVA INCIDENCIA</button>
-    </div>
-  </div>
-  }
 </div>
+
+@if (showValidationPopup()) {
+  <app-validation-popup 
+    [errors]="formErrors()" 
+    (onClose)="showValidationPopup.set(false)">
+  </app-validation-popup>
+}

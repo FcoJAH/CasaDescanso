@@ -159,6 +159,10 @@ export const routes: Routes = [
            {
             path: 'crear-incidencia',
             loadComponent: () => import('./pages/incidents/create/create-incident.component').then(m => m.CrearIncidenciaComponent)
+           },
+           {
+            path: 'ver-incidencias',
+            loadComponent: () => import('./pages/incidents/view-incidents/view-incidents.component').then(m => m.ViewIncidentsComponent)
            }
           ]
       },

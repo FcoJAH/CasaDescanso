@@ -26,6 +26,10 @@ export class IncidentsService {
     return this.http.post(`${this.apiUrl}/Incidents/create`, incidente);
   }
 
+  getIncidentsByResident(residentId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/Incidents/resident/${residentId}`);
+  }
+
   /**
    * Manejador de errores para evitar el 400 en la consola roja
    * y permitir que el componente reciba el mensaje amigablemente.

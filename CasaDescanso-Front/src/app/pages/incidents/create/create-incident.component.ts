@@ -1,13 +1,16 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, inject, computed } from '@angular/core'; // Agregamos computed
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Incidente, IncidentsService } from '../incidents.service';
+import { SuccessViewComponent } from '../../../utils/success/success-view.component';
+import { ValidationPopupComponent } from '../../../utils/popup/validation-popup.component';
 
 @Component({
     selector: 'app-crear-incidente',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    // Agregamos los componentes reutilizables aquí
+    imports: [CommonModule, FormsModule, SuccessViewComponent, ValidationPopupComponent],
     templateUrl: './create-incident.component.html',
     styleUrls: ['./create-incident.component.css']
 })
@@ -15,18 +18,23 @@ export class CrearIncidenciaComponent implements OnInit {
     private incidentesService = inject(IncidentsService);
     private router = inject(Router);
 
-    // Signals para el estado del formulario y datos
+    // Signals de datos
     residentes = signal<any[]>([]);
     residenteSeleccionado = signal<any>(null);
     tipoIncidente = signal<string>('');
     severidad = signal<string>('');
     descripcion = signal<string>('');
 
-    // Signals de control
+    // Signals de control y UI
     loading = signal(false);
     isError = signal(false);
     isSuccess = signal(false);
     errorMessage = signal('');
+    formErrors = signal<string[]>([]);
+    showValidationPopup = signal(false);
+
+    // --- NUEVO: Configuración para el componente SuccessView ---
+    successData = signal<any>(null);
 
     ngOnInit() {
         this.cargarResidentes();
@@ -35,10 +43,7 @@ export class CrearIncidenciaComponent implements OnInit {
     cargarResidentes() {
         this.incidentesService.getResindets().subscribe({
             next: (data) => this.residentes.set(data),
-            error: () => {
-                this.isError.set(true);
-                this.errorMessage.set('Error al cargar la lista de residentes.');
-            }
+            error: () => this.mostrarError('ERROR AL CARGAR LA LISTA DE RESIDENTES.')
         });
     }
 
@@ -49,66 +54,82 @@ export class CrearIncidenciaComponent implements OnInit {
     }
 
     onSubmit() {
-        const empleadoId = this.residenteSeleccionado().id;
-        if (empleadoId === 0 || !this.tipoIncidente() || !this.severidad() || !this.descripcion()) {
-            this.mostrarError('TODOS LOS CAMPOS SON OBLIGATORIOS.');
-            return;
+        if (this.validarCampos()) {
+            this.ejecutarGuardado();
+        }
+    }
+
+    private validarCampos(): boolean {
+        const errores: string[] = [];
+
+        if (!this.tipoIncidente()) {
+            errores.push('EL TIPO DE INCIDENCIA ES OBLIGATORIO.');
+        }
+        if (!this.severidad()) {
+            errores.push('EL NIVEL DE SEVERIDAD ES REQUERIDO.');
+        }
+        if (!this.descripcion() || this.descripcion().trim().length < 10) {
+            errores.push('LA DESCRIPCIÓN DEBE TENER AL MENOS 10 CARACTERES.');
         }
 
-        this.loading.set(true);
-        this.isError.set(false);
+        if (errores.length > 0) {
+            this.formErrors.set(errores);
+            this.showValidationPopup.set(true);
+            return false;
+        }
 
-        // Construcción del objeto Incidente
+        return true;
+    }
+
+    private ejecutarGuardado() {
+        this.loading.set(true);
+
         const payload: Incidente = {
-            residentId: empleadoId,
-            registeredByUserId: 1, // ID del usuario logueado (ej. Francisco)
+            residentId: this.residenteSeleccionado().id,
+            registeredByUserId: 1,
             date: new Date().toISOString(),
-            type: this.tipoIncidente(),
-            severityLevel: this.severidad(),
-            description: this.descripcion()
+            type: this.tipoIncidente().toUpperCase(),
+            severityLevel: this.severidad().toUpperCase(),
+            description: this.descripcion().toUpperCase()
         };
 
-        console.log('Payload a enviar:', payload);
-
-        this.incidentesService.crearIncident( payload ).subscribe({
+        this.incidentesService.crearIncident(payload).subscribe({
             next: (res) => {
                 this.loading.set(false);
                 if (res?.isBusinessError) {
-                    this.mostrarError(res.errorMessage);
+                    this.formErrors.set([res.errorMessage.toUpperCase()]);
+                    this.showValidationPopup.set(true);
                 } else {
+                    this.prepararSuccessData();
                     this.isSuccess.set(true);
-                    this.resetForm();
                 }
             },
-            error: (err) => {
+            error: () => {
                 this.loading.set(false);
-                this.mostrarError('ERROR TÉCNICO AL REGISTRAR EL INCIDENTE.');
-                console.error(err);
+                this.formErrors.set(['ERROR TÉCNICO AL REGISTRAR EL INCIDENTE EN EL SERVIDOR.']);
+                this.showValidationPopup.set(true);
             }
         });
     }
 
-    resetVista() {
-        // 1. Limpiamos estados de error y éxito
-        this.isError.set(false);
-        this.isSuccess.set(false);
-        this.errorMessage.set('');
-
-        this.tipoIncidente.set('');
-        this.severidad.set('');
-        this.descripcion.set('');
-
-        // 3. Si tienes una señal para el objeto completo del residente, también límpiala
-        // this.empleadoSeleccionado.set(null);
+    private prepararSuccessData() {
+        const nombre = `${this.residenteSeleccionado().firstName} ${this.residenteSeleccionado().lastName} ${this.residenteSeleccionado().middleName || ''}`.trim();
+        this.successData.set({
+          titulo: '¡INCIDENCIA REGISTRADA!',
+          mensaje: `El reporte para el residente ${nombre} se ha guardado correctamente.`,
+          botonPrincipal: 'NUEVA INCIDENCIA'
+        });
     }
 
     private mostrarError(msg: string) {
+        this.errorMessage.set(msg);
         this.isError.set(true);
-        this.errorMessage.set(msg.toUpperCase());
-        setTimeout(() => this.isError.set(false), 5000);
     }
 
-    resetForm() {
+    resetVista() {
+        this.isError.set(false);
+        this.isSuccess.set(false);
+        this.errorMessage.set('');
         this.residenteSeleccionado.set(null);
         this.tipoIncidente.set('');
         this.severidad.set('');
@@ -116,6 +137,11 @@ export class CrearIncidenciaComponent implements OnInit {
     }
 
     volver() {
-        this.router.navigate(['/incidentes']);
+        this.router.navigate(['/dashboard']);
+    }
+
+    // Agregamos este alias para el botón "Nueva Incidencia" desde el success-view
+    nuevoRegistro() {
+        this.resetVista();
     }
 }
