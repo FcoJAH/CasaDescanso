@@ -24,8 +24,10 @@
         <a routerLink="/dashboard" routerLinkActive="active" (click)="isSidebarOpen = false">Dashboard</a>
         <a routerLink="/residentes" routerLinkActive="active" (click)="isSidebarOpen = false">Residentes</a>
         <a routerLink="/signos-vitales" routerLinkActive="active" (click)="isSidebarOpen = false">Signos vitales</a>
-        <a routerLink="/checkin-out" routerLinkActive="active" (click)="isSidebarOpen = false">Check-in/Check-out</a>
+        <a routerLink="/incidents" routerLinkActive="active" (click)="isSidebarOpen = false">Incidentes</a>
         <a routerLink="/reporte-signos" routerLinkActive="active" (click)="isSidebarOpen = false">Reporte de signos</a>
+        <!-- Dejar siempre hasta el final -->
+        <a routerLink="/checkin-out" routerLinkActive="active" (click)="isSidebarOpen = false">Check-in/Check-out</a>
 
         @if (authService.isAdmin()) {
         <div class="admin-separator">ADMINISTRACIÓN</div>

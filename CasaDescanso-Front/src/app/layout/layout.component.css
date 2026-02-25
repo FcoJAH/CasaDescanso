@@ -183,7 +183,7 @@ body:not(.sidebar-hidden) .sidebar-overlay {
   }
 
   .sidebar-hidden .sidebar {
-    margin-left: -220px; /* Vuelve a ocultarse empujando */
+    margin-left: -300px; /* Vuelve a ocultarse empujando */
   }
 }
 

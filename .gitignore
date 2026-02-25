@@ -2,21 +2,25 @@
 .vscode/
 .idea/
 *.log
-Thumbs.db
-.DS_Store
+**/*.user
+**/*.suo
+**/*copy.*
+
+# --- BACKEND (.NET) ---
+# Bloquea bin y obj en cualquier subcarpeta del backend
+CasaDescanso-Back/**/[Bb]in/
+CasaDescanso-Back/**/[Oo]bj/
+CasaDescanso-Back/**/.vs/
+# Ignorar configuraciones locales sensibles
+CasaDescanso-Back/**/appsettings.Development.json
 
 # --- FRONTEND (Angular) ---
+# Bloquea la caché y dependencias de Angular
 CasaDescanso-Front/.angular/
 CasaDescanso-Front/node_modules/
 CasaDescanso-Front/dist/
-CasaDescanso-Front/tmp/
-node_modules/
-# No ignoramos package-lock.json para mantener consistencia de versiones
+CasaDescanso-Front/.tsbuildinfo
 
-# --- BACKEND (.NET) ---
-**/[Bb]in/
-**/[Oo]bj/
-**/.vs/
-CasaDescanso-Back/**/*.user
-CasaDescanso-Back/**/*.suo
-CasaDescanso-Back/CasaDescanso.Api/appsettings.Development.json
+# --- SISTEMA ---
+Thumbs.db
+.DS_Store

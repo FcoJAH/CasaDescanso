@@ -138,12 +138,6 @@ export const routes: Routes = [
       },
 
       {
-        path: 'signos-vitales',
-        loadComponent: () =>
-          import('./pages/signos-vitales/registro/registro-signos.component').then(m => m.RegistroSignosComponent),
-      },
-
-      {
         path: 'reporte-signos',
         loadComponent: () =>
           import('./pages/reporte-signos/reporte-signos.component').then(m => m.ReporteSignosComponent),
@@ -154,6 +148,19 @@ export const routes: Routes = [
         path: 'check-history',
         loadComponent: () =>
           import('./pages/check-history/check-history.component').then(m => m.CheckHistoryComponent)
+      },
+
+      // Seccion de roles
+      {
+        path: 'incidents',
+        loadComponent: () =>
+          import('./pages/incidents/incidents.component').then(m => m.IncidentsComponent),
+        children: [
+           {
+            path: 'crear-incidencia',
+            loadComponent: () => import('./pages/incidents/create/create-incident.component').then(m => m.CrearIncidenciaComponent)
+           }
+          ]
       },
     ]
   },

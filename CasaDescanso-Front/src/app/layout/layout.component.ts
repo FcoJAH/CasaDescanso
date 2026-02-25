@@ -16,7 +16,7 @@ export class LayoutComponent implements OnInit {
   public authService = inject(AuthService);
 
   // Mantenemos el sidebar abierto por defecto en desktop
-  isSidebarOpen = true; 
+  isSidebarOpen = false; 
   user$ = this.authService.currentUser$;
 
   ngOnInit() {

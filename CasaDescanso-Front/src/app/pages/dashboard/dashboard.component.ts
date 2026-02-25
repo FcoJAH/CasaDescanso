@@ -10,7 +10,7 @@ Chart.register(...registerables);
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'] // Asegúrate de incluirlo
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
   private dashboardService = inject(DashboardService);
