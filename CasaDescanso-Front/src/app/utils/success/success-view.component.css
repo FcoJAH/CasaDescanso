@@ -100,3 +100,7 @@ h2 {
         transform: translateY(0);
     }
 }
+
+.logo {
+    width: 80px;
+}
